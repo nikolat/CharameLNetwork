@@ -1,0 +1,309 @@
+// ****使い方****
+// 
+// 関数名はイベント名そのままです。SHIORI/3.0テンプレートのように、
+// 文字列取得時頭にOn_がつくようなことはありません。
+// 
+// 値を返すとその内容をSakuraScriptとして実行します
+// 以下の変数に代入すると、動作を制御できます。
+//
+//   res_event , res_reference[0]...[n]
+//     指定したイベントをReferenceつきで発生します。referenceは省略可
+//
+//   res_target
+//     スクリプトやイベントをどのゴーストに送るかを指定します。
+//     Sakura名を指定してください。また、__SYSTEM_ALL_GHOST__で全起動中ゴーストに通知します。
+//     省略すると「プラグインメニューを実行したゴースト」に送ります
+//
+//   res_marker
+//     バルーンのマーカー(下に小さく出るステータス表示)に表示する文字を指定できます。
+//
+//   res_event_option / res_script_option
+//     それぞれ、EventOption / ScriptOptionヘッダを設定します。
+//
+// 詳しくはプラグイン仕様書を参照してください。
+// http://emily.shillest.net/specwiki/index.php?PLUGIN%2F2.0%2F%E4%BB%95%E6%A7%98%E6%9B%B8
+// 
+
+OnMenuExec
+{
+	SHIORI3FW.StructInstalledGhostList()
+	sys.fnc.readCharameL()
+	sys.fnc.sorttimeline()
+	sys.fnc.makeHTML()
+	_path = 'file:///' + GETSETTING('coreinfo.path') + 'html\public.html'
+	_res = "\![open,browser,%(_path)]\e"
+
+	res_event = 'OnCharameLNetwork'
+	res_script_option = 'nobreak,notranslate'
+	_res
+}
+
+ghostpathlist
+{
+	g.ghostpathlist = reference
+}
+pluginpathlist
+{
+	g.pluginpathlist = reference
+}
+
+sys.fnc.readCharameL
+{
+	_filelist = FENUM('..\..\ghost')
+	_dirlist  = IARRAY
+	foreach _filelist; _file {
+		if '\' _in_ _file; _dirlist ,= REPLACE(_file, '\', '')
+	}
+
+	g.screen_name = IARRAY()
+	g.reply = IARRAY()
+	g.datetimestr = IARRAY()
+	g.datetime = IARRAY()
+	g.message = IARRAY()
+	foreach _dirlist; _s {
+		_filename = g.ghostpathlist[0] + _s + '\ghost\master\CharameL.txt'
+		FCHARSET('Shift_JIS')
+		if !FOPEN(_filename, 'r')
+			continue
+		_m = 0
+		_mes = IARRAY()
+		while 1 {
+			_line = FREAD(_filename)
+			if _line == -1 {
+				if _m == 1 {
+					g.screen_name ,= _s
+					g.message ,= JOIN(_mes, '<br />')
+					_m = 0
+					_mes = IARRAY()
+				}
+				break
+			}
+			if _line == '' {
+				if _m == 1 {
+					g.screen_name ,= _s
+					g.message ,= JOIN(_mes, '<br />')
+					_m = 0
+					_mes = IARRAY()
+				}
+			}
+			elseif RE_MATCH(_line, '^To: .+$') {
+				g.reply ,= RE_REPLACEEX(_line, '^To: (.+)$', '$1')
+				_m = 1
+			}
+			elseif RE_MATCH(_line, '^Date: .+$') {
+				_time = RE_REPLACEEX(_line, '^Date: (.+)$', '$1')
+				g.datetimestr ,= _time
+				_t = RE_REPLACEEX(_time, '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})$', '$1,$2,$3,$4,$5,$6')
+				g.datetime ,= GETSECCOUNT(_t[0],_t[1],_t[2],0,_t[3],_t[4],_t[5])
+				_m = 1
+			}
+			elseif _m == 1 {
+				_mes ,= _line
+			}
+		}
+		FCLOSE(_filename)
+	}
+}
+
+sys.fnc.sorttimeline
+{
+	_index = ASORT('double,descending,index',g.datetime)
+	_tmp.screen_name = IARRAY()
+	_tmp.reply = IARRAY()
+	_tmp.datetimestr = IARRAY()
+	_tmp.datetime = IARRAY()
+	_tmp.message = IARRAY()
+	_n = ARRAYSIZE(_index)
+	for _i = 0; _i < _n; _i++ {
+		_tmp.screen_name[_i] = g.screen_name[_index[_i]]
+		_tmp.reply[_i] = g.reply[_index[_i]]
+		_tmp.datetimestr[_i] = g.datetimestr[_index[_i]]
+		_tmp.datetime[_i] = g.datetime[_index[_i]]
+		_tmp.message[_i] = g.message[_index[_i]]
+	}
+	g.screen_name = _tmp.screen_name
+	g.reply = _tmp.reply
+	g.datetimestr = _tmp.datetimestr
+	g.datetime = _tmp.datetime
+	g.message = _tmp.message
+}
+
+sys.fnc.makeHTML
+{
+	_filename = '.\html\template\template.html'
+	FCHARSET('UTF-8')
+	if !FOPEN(_filename, 'r')
+		return
+	_a_template = IARRAY()
+	while 1 {
+		_line = FREAD(_filename)
+		if _line == -1
+			break
+		_a_template ,= _line
+	}
+	FCLOSE(_filename)
+
+	_a_screen_name = g.screen_name
+	_a_reply = g.reply
+	_a_datetimestr = g.datetimestr
+	_a_message = g.message
+
+	_image_directory = '../../CharameL/image/'
+	_path = '.\html\public.html'
+
+	FCHARSET('UTF-8')
+	if !FOPEN(_path, 'w') {
+		return
+	}
+	foreach _a_template; _line {
+		if _line == '[:pagebody:]' {
+			_n = ARRAYSIZE(_a_screen_name)
+			for _i = 0; _i < _n; _i++ {
+				_reply_screen_name = sys.fnc.g_to_d(_a_reply[_i])
+				if (_reply_screen_name == '')
+					continue
+				_name = sys.fnc.d_to_s(_a_screen_name[_i])
+				_t = '<dt><img src="' + _image_directory + _a_screen_name[_i] + '.png" width="32" height="32" alt="' + _a_screen_name[_i] + '" />'/
+					+ '<span class="name">' + _name + '</span> <span class="screen_name">@' + _a_screen_name[_i] + '</span> <span class="datetime">' + _a_datetimestr[_i] + '</span></dt>'
+				FWRITE(_path, _t)
+				_t = '<dd><a href="#">@' + _reply_screen_name + '</a> ' + _a_message[_i] + '</dd>'
+				FWRITE(_path, _t)
+			}
+		}
+		else {
+			FWRITE(_path, _line)
+		}
+	}
+	FCLOSE(_path)
+}
+
+sys.fnc.g_to_d
+{
+	_i = ASEARCH(_argv[0], installedghostlist)
+	if _i >= 0
+		ghostdirlist[_i]
+	else
+		''
+}
+sys.fnc.d_to_s
+{
+	_i = ASEARCH(_argv[0], ghostdirlist)
+	if _i >= 0
+		installedsakuralist[_i]
+	else
+		''
+}
+
+//------------------------------------------------------------------------------
+//関数名：SHIORI3FW.StructInstalledGhostList
+//機能　：構築
+//------------------------------------------------------------------------------
+SHIORI3FW.StructInstalledGhostList
+{
+	// ghostディレクトリ配下のディレクトリを抽出
+	_filelist = FENUM('..\..\ghost')
+	_dirlist  = IARRAY
+	foreach _filelist; _file {
+		if '\' _in_ _file; _dirlist ,= _file
+	}
+	_dirnum = ARRAYSIZE(_dirlist)
+
+	// 取得開始位置と取得数を求める
+	StructGhostList.Index = 0
+	_num = _dirnum
+
+	// リスト作成主処理
+	installedghostlist = IARRAY()
+	installedsakuralist = IARRAY()
+	installedkerolist = IARRAY()
+	ghostdirlist = IARRAY()
+	for _i = 0; _i < _num; _i++ {
+		// 取得位置の更新
+		StructGhostList.Index++
+		
+		if StructGhostList.Index >= _dirnum; StructGhostList.Index = 0
+
+		// descript.txtから情報取得
+		_ghostname = SHIORI3FW.GetGhostNameFromDescriptTxt(/
+						'..\..\ghost' + _dirlist[StructGhostList.Index])
+		// リストへ追加
+		if ARRAYSIZE(_ghostname) {
+			installedghostlist  ,= _ghostname[0]
+			installedsakuralist ,= _ghostname[1]
+			installedkerolist   ,= _ghostname[2]
+			ghostdirlist  ,= REPLACE(_dirlist[StructGhostList.Index], '\', '')
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+//関数名：SHIORI3FW.GetGhostNameFromDescriptTxt
+//機能　：descript.txtからname/sakura.name/kero.nameを取得します
+//引数　：_argv[0] 取得対象のゴーストディレクトリ
+//------------------------------------------------------------------------------
+SHIORI3FW.GetGhostNameFromDescriptTxt
+{
+	_charset = SHIORI3FW.GetCharsetFromDescriptTxt(_argv[0])
+	if _charset == ''
+		_charset = 'Shift_JIS'
+	FCHARSET(_charset)
+	if !FOPEN(_filename = "%_argv[0]\ghost\master\descript.txt", "r")
+		return
+
+	_ghostname = IARRAY()
+	_flag      = 0
+	while _flag != 7 {
+		if (_line = FREAD(_filename)) == -1; break
+		
+		case CUTSPACE(_line[0]) {
+			when 'name' {
+				_ghostname[0] = CUTSPACE(_line[1])
+				_flag++
+			}
+			when 'sakura.name' {
+				_ghostname[1] = CUTSPACE(_line[1])
+				_flag += 2
+			}
+			when 'kero.name' {
+				_ghostname[2] = CUTSPACE(_line[1])
+				_flag += 4
+			}
+		}
+	}
+
+	FCLOSE(_filename)
+	_ghostname
+}
+
+//------------------------------------------------------------------------------
+//関数名：SHIORI3FW.GetCharsetFromDescriptTxt
+//機能　：descript.txtからcharsetを取得します
+//引数　：_argv[0] 取得対象のゴーストディレクトリ
+//------------------------------------------------------------------------------
+SHIORI3FW.GetCharsetFromDescriptTxt
+{
+	if !FOPEN(_filename = "%_argv[0]\ghost\master\descript.txt", "r")
+		return
+
+	_charset = ''
+	_flag = 0
+	while _flag != 1 {
+		if (_line = FREAD(_filename)) == -1; break
+		
+		case CUTSPACE(_line[0]) {
+			when 'charset' {
+				_charset = CUTSPACE(_line[1])
+				_flag++
+			}
+		}
+	}
+
+	FCLOSE(_filename)
+	_charset
+}
+
+//------------------------------------------------------------------------------
+version
+{
+	'CharameLNetwork/0.1'
+}
