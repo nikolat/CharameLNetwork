@@ -1,0 +1,15 @@
+charset,UTF-8
+file,descript.txt38d79e187b970e482ed9e6e92b77f799size=276date=2012-12-21T00:00:00
+file,html/template/template.htmlf01d44861919e4776c8dcbab65c2afeasize=394date=2012-12-21T00:00:00
+file,install.txtf144485d85b5cde0a2e43d5f19b1e471size=73date=2012-12-21T00:00:00
+file,messagetxt/classical-chinese.txt82769639cb6060591d0797126ac5efabsize=5129date=2012-12-21T00:00:00
+file,messagetxt/english.txt5a11530a72b2e815b677c19dbd3fac03size=7112date=2012-12-21T00:00:00
+file,messagetxt/japanese.txted859fd30c66d2ad612c56ebe66324d2size=9190date=2012-12-21T00:00:00
+file,messagetxt/simplified-chinese.txtdd620e757e683ff93fa05105090d7bdbsize=6520date=2012-12-21T00:00:00
+file,messagetxt/traditional-chinese.txte115ae8c7131f3965b5cff2fa24c2250size=6503date=2012-12-21T00:00:00
+file,readme.txt7e1c018d6ba089d322507129c0913b08size=1606date=2012-12-21T00:00:00
+file,system/yaya_plugin2.dic58c548aee98f05c988e1e311f13ef1e8size=18630date=2012-12-21T00:00:00
+file,system_config.txtd9864180c0e3c063fa8e8575cd0c9990size=246date=2012-12-21T00:00:00
+file,yaya.dlla81433a177f8825dd357947003d74d37size=798720date=2012-12-21T00:00:00
+file,yaya.txt23b04aa9a1a91fbf1b3957e8d4870a84size=2214date=2012-12-21T00:00:00
+file,yaya_plugin_main.txt72bee9c3ffa3c6445358cffec716ad57size=8179date=2012-12-21T00:00:00
