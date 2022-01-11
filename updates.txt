@@ -13,4 +13,4 @@ file,system/yaya_plugin2.dic58c548aee98f05c988e1e311f13ef1e8size=18630date=20
 file,system_config.txtd9864180c0e3c063fa8e8575cd0c9990size=246date=2012-12-21T00:00:00
 file,yaya.dlla81433a177f8825dd357947003d74d37size=798720date=2012-12-21T00:00:00
 file,yaya.txt23b04aa9a1a91fbf1b3957e8d4870a84size=2214date=2012-12-21T00:00:00
-file,yaya_plugin_main.txtcbfb79a6d693ba141883d7b11fb1521csize=8291date=2012-12-21T00:00:00
+file,yaya_plugin_main.txt9089947340fb6548c7cf0754a98f152esize=8291date=2012-12-21T00:00:00
