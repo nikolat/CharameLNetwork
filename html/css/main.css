@@ -1,0 +1,37 @@
+.name {
+    font-weight: bold;
+}
+.screen_name, .datetime {
+    color: lightslategray;
+}
+body {
+    background-color: darkgray;
+}
+h1, dl, footer {
+    background-color: white;
+    width: 80%;
+    margin: 0 auto;
+}
+h1 {
+    margin-top: 50px;
+    line-height: 2em;
+    text-indent: 1em;
+}
+dt, footer {
+    padding-top: 5px;
+    border-top: 1px solid darkgray;
+}
+dt img {
+    float: left;
+    clear: left;
+    margin: 10px 10px 0 10px;
+}
+dd {
+    margin-left: 60px;
+    padding-bottom: 5px;
+}
+footer {
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 50px;
+}
