@@ -166,7 +166,8 @@ sys.fnc.makeHTML
 				_t = '<dt><img src="' + _image_directory + _a_screen_name[_i] + '.png" width="32" height="32" alt="' + _a_screen_name[_i] + '" />'/
 					+ '<span class="name">' + _name + '</span> <span class="screen_name">@' + _a_screen_name[_i] + '</span> <span class="datetime">' + _a_datetimestr[_i] + '</span></dt>'
 				FWRITE(_path, _t)
-				_t = '<dd><a href="#">@' + _reply_screen_name + '</a> ' + _a_message[_i] + '</dd>'
+				_mes = RE_REPLACEEX(_a_message[_i], "((?:https?|ftp):\/\/[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,%#]+)", '<a href="$1">$1</a>')
+				_t = '<dd><a href="#">@' + _reply_screen_name + '</a> ' + _mes + '</dd>'
 				FWRITE(_path, _t)
 			}
 		}
