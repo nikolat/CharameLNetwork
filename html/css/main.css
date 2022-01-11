@@ -1,11 +1,14 @@
 .name {
     font-weight: bold;
 }
-.screen_name, .datetime {
-    color: lightslategray;
+.screen_name, time {
+    color: lightgray;
 }
 body {
-    background-color: darkgray;
+    background-color: #ebae78;
+}
+a {
+    color: #8E623C;
 }
 h1, dl, footer {
     background-color: white;
@@ -16,10 +19,15 @@ h1 {
     margin-top: 50px;
     line-height: 2em;
     text-indent: 1em;
+    background-color: #8E623C;
+}
+h1 a {
+    color: white;
+    text-decoration: none;
 }
 dt, footer {
     padding-top: 5px;
-    border-top: 1px solid darkgray;
+    border-top: 1px solid #ebae78;
 }
 dt img {
     float: left;
@@ -34,4 +42,9 @@ footer {
     text-align: center;
     padding-bottom: 10px;
     margin-bottom: 50px;
+    color: white;
+    background-color: #8E623C;
+}
+footer a {
+    color: white;
 }

@@ -163,8 +163,9 @@ sys.fnc.makeHTML
 				if (_reply_screen_name == '')
 					continue
 				_name = sys.fnc.d_to_s(_a_screen_name[_i])
+				_time = RE_REPLACEEX(_a_datetimestr[_i], '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})$', '$1-$2-$3T$4:$5:$6')
 				_t = '<dt><img src="' + _image_directory + _a_screen_name[_i] + '.png" width="32" height="32" alt="' + _a_screen_name[_i] + '" />'/
-					+ '<span class="name">' + _name + '</span> <span class="screen_name">@' + _a_screen_name[_i] + '</span> <span class="datetime">' + _a_datetimestr[_i] + '</span></dt>'
+					+ '<span class="name">' + _name + '</span> <span class="screen_name">@' + _a_screen_name[_i] + '</span> <time datetime="' + _time + '">' + _a_datetimestr[_i] + '</time></dt>'
 				FWRITE(_path, _t)
 				_mes = RE_REPLACEEX(_a_message[_i], "((?:https?|ftp):\/\/[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,%#]+)", '<a href="$1">$1</a>')
 				_t = '<dd><a href="#">@' + _reply_screen_name + '</a> ' + _mes + '</dd>'
