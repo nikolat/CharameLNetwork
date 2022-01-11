@@ -307,5 +307,5 @@ SHIORI3FW.GetCharsetFromDescriptTxt
 //------------------------------------------------------------------------------
 version
 {
-	'CharameLNetwork/0.2'
+	'CharameLNetwork/0.3'
 }
