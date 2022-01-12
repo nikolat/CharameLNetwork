@@ -94,7 +94,7 @@ sys.fnc.readCharameL
 				_time = RE_REPLACEEX(_line, '^Date: (.+)$', '$1')
 				g.datetimestr ,= _time
 				_t = RE_REPLACEEX(_time, '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})$', '$1,$2,$3,$4,$5,$6')
-				g.datetime ,= GETSECCOUNT(_t[0],_t[1],_t[2],0,_t[3],_t[4],_t[5])
+				g.datetime ,= GETSECCOUNT(_t[0], _t[1], _t[2], 0, _t[3], _t[4], _t[5])
 				_m = 1
 			}
 			elseif _m == 1 {
@@ -107,7 +107,7 @@ sys.fnc.readCharameL
 
 sys.fnc.sorttimeline
 {
-	_index = ASORT('double,descending,index',g.datetime)
+	_index = ASORT('double,descending,index', g.datetime)
 	_tmp.screen_name = IARRAY()
 	_tmp.reply = IARRAY()
 	_tmp.datetimestr = IARRAY()
@@ -160,12 +160,14 @@ sys.fnc.makeHTML
 			_n = ARRAYSIZE(_a_screen_name)
 			for _i = 0; _i < _n; _i++ {
 				_reply_screen_name = sys.fnc.g_to_d(_a_reply[_i])
-				if (_reply_screen_name == '')
+				if _reply_screen_name == ''
 					continue
 				_name = sys.fnc.d_to_s(_a_screen_name[_i])
 				_time = RE_REPLACEEX(_a_datetimestr[_i], '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})$', '$1-$2-$3T$4:$5:$6')
 				_t = '<dt><img src="' + _image_directory + _a_screen_name[_i] + '.png" width="32" height="32" alt="' + _a_screen_name[_i] + '" />'/
-					+ '<span class="name">' + _name + '</span> <span class="screen_name">@' + _a_screen_name[_i] + '</span> <time datetime="' + _time + '">' + _a_datetimestr[_i] + '</time></dt>'
+					+ '<span class="name">' + _name + '</span> '/
+					+ '<span class="screen_name">@' + _a_screen_name[_i] + '</span> '/
+					+ '<time datetime="' + _time + '">' + _a_datetimestr[_i] + '</time></dt>'
 				FWRITE(_path, _t)
 				_mes = RE_REPLACEEX(_a_message[_i], "((?:https?|ftp):\/\/[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,%#]+)", '<a href="$1">$1</a>')
 				_t = '<dd><a href="#">@' + _reply_screen_name + '</a> ' + _mes + '</dd>'

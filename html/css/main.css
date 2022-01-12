@@ -5,7 +5,7 @@
     color: lightgray;
 }
 body {
-    background-color: #ebae78;
+    background-color: #EBAE78;
 }
 a {
     color: #8E623C;
@@ -27,7 +27,7 @@ h1 a {
 }
 dt, footer {
     padding-top: 5px;
-    border-top: 1px solid #ebae78;
+    border-top: 1px solid #EBAE78;
 }
 dt img {
     float: left;
