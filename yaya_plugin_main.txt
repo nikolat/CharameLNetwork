@@ -49,19 +49,26 @@ pluginpathlist
 
 sys.fnc.readCharameL
 {
-	_filelist = FENUM('..\..\ghost')
-	_dirlist  = IARRAY
-	foreach _filelist; _file {
-		if '\' _in_ _file; _dirlist ,= REPLACE(_file, '\', '')
-	}
-
 	g.screen_name = IARRAY()
 	g.reply = IARRAY()
 	g.datetimestr = IARRAY()
 	g.datetime = IARRAY()
 	g.message = IARRAY()
+	foreach g.ghostpathlist; _dir {
+		sys.fnc.readCharameLSub(_dir)
+	}
+}
+
+sys.fnc.readCharameLSub
+{
+	_filelist = FENUM(_argv[0])
+	_dirlist  = IARRAY
+	foreach _filelist; _file {
+		if '\' _in_ _file; _dirlist ,= REPLACE(_file, '\', '')
+	}
+
 	foreach _dirlist; _s {
-		_filename = g.ghostpathlist[0] + _s + '\ghost\master\CharameL.txt'
+		_filename = _argv[0] + _s + '\ghost\master\CharameL.txt'
 		FCHARSET('Shift_JIS')
 		if !FOPEN(_filename, 'r')
 			continue
@@ -204,11 +211,21 @@ sys.fnc.d_to_s
 //------------------------------------------------------------------------------
 SHIORI3FW.StructInstalledGhostList
 {
+	installedghostlist = IARRAY()
+	installedsakuralist = IARRAY()
+	installedkerolist = IARRAY()
+	ghostdirlist = IARRAY()
+	foreach g.ghostpathlist; _dir {
+		SHIORI3FW.StructInstalledGhostListSub(_dir)
+	}
+}
+SHIORI3FW.StructInstalledGhostListSub
+{
 	// ghostディレクトリ配下のディレクトリを抽出
-	_filelist = FENUM('..\..\ghost')
+	_filelist = FENUM(_argv[0])
 	_dirlist  = IARRAY
 	foreach _filelist; _file {
-		if '\' _in_ _file; _dirlist ,= _file
+		if '\' _in_ _file; _dirlist ,= REPLACE(_file, '\', '')
 	}
 	_dirnum = ARRAYSIZE(_dirlist)
 
@@ -217,10 +234,6 @@ SHIORI3FW.StructInstalledGhostList
 	_num = _dirnum
 
 	// リスト作成主処理
-	installedghostlist = IARRAY()
-	installedsakuralist = IARRAY()
-	installedkerolist = IARRAY()
-	ghostdirlist = IARRAY()
 	for _i = 0; _i < _num; _i++ {
 		// 取得位置の更新
 		StructGhostList.Index++
@@ -228,14 +241,13 @@ SHIORI3FW.StructInstalledGhostList
 		if StructGhostList.Index >= _dirnum; StructGhostList.Index = 0
 
 		// descript.txtから情報取得
-		_ghostname = SHIORI3FW.GetGhostNameFromDescriptTxt(/
-						'..\..\ghost' + _dirlist[StructGhostList.Index])
+		_ghostname = SHIORI3FW.GetGhostNameFromDescriptTxt(_argv[0] + _dirlist[StructGhostList.Index])
 		// リストへ追加
 		if ARRAYSIZE(_ghostname) {
 			installedghostlist  ,= _ghostname[0]
 			installedsakuralist ,= _ghostname[1]
 			installedkerolist   ,= _ghostname[2]
-			ghostdirlist  ,= REPLACE(_dirlist[StructGhostList.Index], '\', '')
+			ghostdirlist  ,= _dirlist[StructGhostList.Index]
 		}
 	}
 }
