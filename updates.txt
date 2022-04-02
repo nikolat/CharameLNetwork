@@ -11,6 +11,6 @@ file,messagetxt/traditional-chinese.txt3c19fa6d88957961a5e7bccc700512c3size=67
 file,readme.txt7e1c018d6ba089d322507129c0913b08size=1606date=2012-12-21T00:00:00
 file,system/yaya_plugin2.dicf6c65347be07c0bbe5c41608adcad7d1size=18603date=2012-12-21T00:00:00
 file,system_config.txt07bba11d2a8257192970c0c2adeabcb8size=658date=2012-12-21T00:00:00
-file,yaya.dll837b6bae4a46f950d6104665e8e859e0size=798720date=2012-12-21T00:00:00
-file,yaya.txte466925708118c2cc149ea45f9b2e61csize=1843date=2012-12-21T00:00:00
-file,yaya_plugin_main.txt306251144298eb7cae87e9669e9a8c2asize=8633date=2012-12-21T00:00:00
+file,yaya.dll866db1635a1b1be0a46fc16e4abe2a41size=839680date=2012-12-21T00:00:00
+file,yaya.txtce591731112fed0ae9e02f54f6e6efe0size=2127date=2012-12-21T00:00:00
+file,yaya_plugin_main.txtefc09b4b38f27bb10eee0ac0f0b13c96size=8633date=2012-12-21T00:00:00
