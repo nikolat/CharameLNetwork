@@ -1,5 +1,5 @@
 charset,UTF-8
-file,descript.txt38d79e187b970e482ed9e6e92b77f799size=276date=2012-12-21T00:00:00
+file,descript.txtb2c0c18b6c683c11636a9c85b3b9b11bsize=273date=2012-12-21T00:00:00
 file,html/css/main.css4e04580807a6e49cb48918e37915e4f9size=754date=2012-12-21T00:00:00
 file,html/template/template.htmla776ffd692e62670abc9653ef6b7e915size=421date=2012-12-21T00:00:00
 file,install.txtf144485d85b5cde0a2e43d5f19b1e471size=73date=2012-12-21T00:00:00
