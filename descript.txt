@@ -4,7 +4,7 @@ name,CharameLNetwork
 id,d3382a60-71dc-11ec-b7a6-0800200c9a66
 filename,yaya.dll
 craftman,Don
-craftmanurl,http://nikolat.herokuapp.com/
+craftmanurl,https://nikolat.github.io/
 homeurl,https://raw.githubusercontent.com/nikolat/CharameLNetwork/main/
 secondchangeinterval,0
 readme.charset,UTF-8
